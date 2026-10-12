@@ -1,0 +1,718 @@
+/* Indian Festivals | shared parchment & motion system
+   Used verbatim by Next.js and by the installable WordPress theme. */
+
+:root {
+  --paper-dark: #a46d36;
+  --paper-light: #f8edcf;
+  --paper-ink: #3c210f;
+  --paper-gold: #d4a452;
+  --tear-shape: polygon(
+    1.2% 1%, 5% .35%, 10% 1.5%, 16% .3%, 22% 1.1%, 28% .15%, 35% 1.6%, 42% .3%, 50% 1.15%, 57% .1%, 65% 1.5%, 72% .3%, 80% 1.1%, 88% .2%, 95% 1.4%, 99% .5%,
+    98.8% 8%, 99.9% 18%, 98.7% 29%, 99.8% 39%, 98.6% 51%, 99.9% 63%, 98.9% 76%, 99.8% 87%, 98.7% 99%,
+    93% 98.8%, 85% 99.8%, 76% 98.7%, 67% 99.8%, 59% 98.5%, 50% 99.8%, 41% 98.8%, 32% 99.8%, 23% 98.8%, 15% 99.9%, 7% 98.8%, .5% 99%,
+    1.3% 88%, .1% 77%, 1.2% 66%, .2% 54%, 1.2% 43%, .1% 32%, 1.4% 21%, .1% 10%
+  );
+}
+
+/* A cutout lives on top of the desk, not inside a flat rectangle. The outer
+   wrapper casts the shadow, so clip-path doesn't crop away its depth. */
+.paper-card-stage {
+  position: relative;
+  min-width: 0;
+  perspective: 780px;
+  filter: drop-shadow(0 1px 1px rgba(65, 30, 8, .45)) drop-shadow(2px 5px 4px rgba(37, 17, 7, .3));
+  transition: filter .35s ease;
+}
+.paper-card-stage:nth-child(3n+2) { --rest-rotation: .75deg; }
+.paper-card-stage:nth-child(3n+1) { --rest-rotation: -.75deg; }
+.paper-card-stage:nth-child(3n) { --rest-rotation: -.15deg; }
+.paper-card-stage:nth-child(3n+2) .torn-card {
+  --tear-shape: polygon(
+    .5% .8%, 7% .1%, 14% 1.3%, 21% .2%, 29% 1.6%, 37% .2%, 45% 1.3%, 54% .2%, 64% 1.4%, 72% .1%, 81% 1.2%, 90% .1%, 99.5% 1%,
+    98.8% 11%, 99.9% 22%, 98.8% 34%, 99.9% 47%, 98.5% 59%, 99.9% 73%, 98.8% 87%, 99.4% 99%,
+    91% 98.6%, 83% 99.8%, 74% 98.7%, 65% 99.8%, 56% 98.5%, 47% 99.9%, 38% 98.8%, 29% 99.7%, 20% 98.6%, 11% 99.9%, .5% 98.9%,
+    1.5% 87%, .1% 75%, 1.3% 64%, .1% 52%, 1.5% 40%, .2% 28%, 1.4% 15%
+  );
+}
+.paper-card-stage:hover, .paper-card-stage:focus-within {
+  z-index: 12;
+  filter: drop-shadow(2px 4px 2px rgba(59, 24, 6, .58)) drop-shadow(13px 20px 16px rgba(24, 9, 4, .72));
+}
+
+.torn-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --lift-y: 0px;
+  --glare-x: 50%;
+  --glare-y: 40%;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 10px 9px 15px;
+  background: transparent;
+  border: 0;
+  color: var(--paper-ink);
+  isolation: isolate;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transform-style: preserve-3d;
+  transform: rotate(var(--rest-rotation, 0deg)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--lift-y), 0);
+  transition: transform .24s cubic-bezier(.19, 1, .22, 1);
+}
+.torn-card:before, .torn-card:after, .torn-card-edge { pointer-events: none; }
+.torn-card-edge {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(130deg, #6a3817, #d1a062 23%, #9c6c35 76%, #5d300f);
+  clip-path: var(--tear-shape);
+  transform: translate3d(1px, 3px, -3px);
+}
+.torn-card:before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px 2px;
+  z-index: -1;
+  clip-path: var(--tear-shape);
+  background-image:
+    var(--paper-grain-image, none),
+    radial-gradient(ellipse 85% 55% at 12% 7%, rgba(255, 255, 244, .9), transparent 75%),
+    radial-gradient(ellipse 80% 45% at 85% 97%, rgba(119, 63, 15, .24), transparent 75%),
+    linear-gradient(95deg, #ddbd85 0%, #f9eccb 9%, #f4e3ba 49%, #f7e8c5 88%, #c6965c 100%);
+  background-size: 275px 275px, auto, auto, auto;
+  background-blend-mode: multiply, normal, normal, normal;
+  box-shadow: inset 1px 1px 8px rgba(125, 69, 21, .3), inset -4px -3px 9px rgba(121, 65, 20, .25);
+}
+.torn-card:after {
+  content: "";
+  position: absolute;
+  inset: 5px 6px 6px;
+  z-index: 2;
+  border: 1px solid rgba(137, 89, 37, .35);
+  background: radial-gradient(circle at var(--glare-x) var(--glare-y), rgba(255, 250, 204, .3), transparent 55%);
+  opacity: .6;
+  transition: opacity .3s ease;
+}
+.torn-card:hover, .torn-card:focus-visible { --lift-y: -9px; --rest-rotation: 0deg; }
+.fest-card.torn-card:hover, .fest-card.torn-card:focus-visible,
+.deity-card.torn-card:hover, .deity-card.torn-card:focus-visible {
+  transform: rotate(var(--rest-rotation, 0deg)) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translate3d(0, var(--lift-y), 0);
+}
+.torn-card:hover:after, .torn-card:focus-visible:after { opacity: 1; }
+.torn-card:focus-visible { outline: 3px solid #fff0b0; outline-offset: 5px; }
+.torn-card > :not(.torn-card-edge) { position: relative; z-index: 1; }
+
+/* The artwork is a separate print glued on top of the irregular paper sheet. */
+.fest-card.torn-card, .deity-card.torn-card { padding: 10px 9px 15px; }
+.torn-card .fest-card-frame, .torn-card .deity-frame, .torn-card .archive-photo {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #fff2d5;
+  outline: 1px solid rgba(109, 67, 24, .7);
+  background: #f7e5c1;
+  padding: 0;
+  margin: 0 0 11px;
+  box-shadow: 0 3px 7px rgba(72, 32, 9, .38), inset 0 0 0 1px rgba(247, 221, 164, .7);
+  clip-path: polygon(0 .6%, 8% 0, 17% .6%, 28% .15%, 40% .7%, 54% .15%, 67% .7%, 80% .1%, 90% .7%, 100% .2%, 99.5% 20%, 100% 47%, 99.5% 73%, 100% 99.4%, 86% 99.9%, 70% 99.3%, 54% 100%, 37% 99.2%, 20% 99.9%, 0 99.3%);
+  transform: translateZ(17px);
+  transition: transform .38s cubic-bezier(.2, .85, .3, 1), box-shadow .38s ease;
+}
+.torn-card .fest-card-frame:after, .torn-card .deity-frame:after, .torn-card .archive-photo:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 4px solid rgba(255, 244, 220, .16);
+  box-shadow: inset 0 0 18px rgba(49, 18, 6, .4);
+}
+.torn-card .fest-card-img, .torn-card .deity-img, .torn-card .archive-photo img {
+  display: block;
+  width: 100%;
+  height: 132px;
+  object-fit: cover;
+  border: 0;
+  filter: saturate(.96) contrast(1.04);
+  transition: transform .58s cubic-bezier(.2, .85, .3, 1), filter .35s ease;
+}
+.torn-card .deity-img { height: 136px; object-position: 50% 21%; }
+.torn-card .archive-photo img { height: 170px; }
+.torn-card:hover .fest-card-frame, .torn-card:hover .deity-frame, .torn-card:hover .archive-photo,
+.torn-card:focus-visible .fest-card-frame, .torn-card:focus-visible .deity-frame {
+  transform: translateZ(31px) translateY(-2px);
+  box-shadow: 1px 8px 14px rgba(45, 18, 6, .54);
+}
+.torn-card:hover img, .torn-card:focus-visible img { transform: scale(1.09); filter: saturate(1.1) contrast(1.06); }
+.torn-card .fest-card-title, .torn-card .deity-name, .torn-card .archive-name {
+  width: 100%;
+  line-height: 1.25;
+  text-wrap: balance;
+  transform: translateZ(20px);
+  text-shadow: 0 1px rgba(255, 247, 217, .6);
+}
+.torn-card .fest-card-title { min-height: 2.5em; display: flex; align-items: center; justify-content: center; font-size: 11.7px; }
+.torn-card .deity-name { font-size: 12.5px; }
+.torn-card .fest-card-date {
+  transform: translateZ(17px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10.5px;
+  white-space: nowrap;
+  margin: 2px 0 3px;
+}
+.torn-card .fest-card-date .ornament-svg { width: 12px; height: 12px; }
+.torn-card .fest-card-tag, .torn-card .deity-role {
+  transform: translateZ(12px);
+  font-size: 12px;
+  line-height: 1.12;
+}
+.torn-card .deity-role { margin-top: 5px; }
+.torn-card .archive-desc { font: italic 15px/1.3 "Crimson Text", Georgia, serif; color: #6e4624; margin: 9px 0 0; }
+
+/* Recessed paper sections with grain and a torn upper lip. */
+.sheet-shadow { min-width: 0; filter: drop-shadow(1px 3px 2px rgba(46, 19, 5, .8)) drop-shadow(5px 13px 9px rgba(12, 5, 2, .5)); }
+.sheet-shadow > .parchment-sheet { height: 100%; }
+.parchment-sheet:before, .pinned-note:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: var(--paper-grain-image, none);
+  background-size: 285px 285px;
+  opacity: .57;
+  mix-blend-mode: multiply;
+}
+.parchment-sheet > *, .pinned-note > * { position: relative; z-index: 2; }
+.parchment-sheet:after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(120, 76, 27, .17);
+  pointer-events: none;
+  z-index: 3;
+  clip-path: polygon(0 1%, 10% 0, 30% 1%, 50% 0, 70% 1%, 90% 0, 100% 1%, 99% 25%, 100% 50%, 99% 75%, 100% 99%, 75% 100%, 50% 99%, 25% 100%, 0 99%);
+}
+.pinned-note { position: relative; }
+
+/* Ornament art is layered above the table but cannot obscure clicks. */
+.scene-ornament { position: absolute; pointer-events: none; z-index: 8; user-select: none; }
+.scene-ornament img { display: block; max-width: 100%; }
+.hero-wrapper .ornament-bell--left { left: -49px; top: -74px; width: 88px; transform-origin: 50% 0; animation: bell-swing 6.2s ease-in-out infinite; }
+.hero-wrapper .ornament-bell--right { right: -50px; top: -73px; width: 90px; transform-origin: 50% 0; animation: bell-swing 6.5s ease-in-out -2.5s infinite; }
+.hero-wrapper .ornament-diya--left { width: 125px; left: -60px; bottom: -21px; animation: diya-breathe 3s ease-in-out infinite; }
+.hero-wrapper .ornament-flower--left { width: 68px; left: -17px; bottom: 9px; transform: rotate(-22deg); animation: flower-sway 7.5s ease-in-out infinite; }
+.hero-wrapper .ornament-flower--right { width: 63px; right: -25px; bottom: 12px; transform: rotate(19deg); animation: flower-sway 8s ease-in-out -2s infinite; }
+.deities-and-quote-row .ornament-diya--right { width: 120px; right: -62px; bottom: -38px; animation: diya-breathe 3.4s ease-in-out -.9s infinite; }
+.deities-and-quote-row .ornament-flower--deity { width: 63px; left: -30px; bottom: -18px; animation: flower-sway 7s ease-in-out -3s infinite; }
+.hero-center-parchment { position: relative; }
+.hero-postcard { --tilt-x: 0deg; --tilt-y: 0deg; transform: rotate(2deg) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateZ(20px); transform-style: preserve-3d; transition: transform .32s ease, box-shadow .3s ease; }
+.hero-postcard:hover { box-shadow: 8px 24px 29px rgba(24, 9, 2, .62); }
+.hero-postcard-img { animation: photo-breathe 14s ease-in-out infinite alternate; }
+.pocket-watch { animation: watch-hover 6s ease-in-out infinite; }
+.pocket-watch:after {
+  content: "✦";
+  position: absolute;
+  bottom: 7px;
+  color: #97621d;
+  font-size: 14px;
+}
+.wax-seal { animation: seal-glow 5s ease-in-out infinite; }
+.om-circle { animation: seal-glow 5s ease-in-out -1s infinite; }
+.golden-ribbon { position: relative; overflow: hidden; }
+.golden-ribbon:after {
+  content: "";
+  position: absolute;
+  inset: -30% auto -30% -35%;
+  width: 19%;
+  transform: skewX(-24deg);
+  background: linear-gradient(90deg, transparent, rgba(255, 241, 174, .38), transparent);
+  animation: gilded-glint 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.milestone-orb { animation: orb-breathe 3.7s ease-in-out infinite; }
+.milestone-item:nth-child(2) .milestone-orb { animation-delay: -.7s; }
+.milestone-item:nth-child(3) .milestone-orb { animation-delay: -1.4s; }
+.milestone-item:nth-child(4) .milestone-orb { animation-delay: -2.1s; }
+.milestone-item:nth-child(5) .milestone-orb { animation-delay: -2.8s; }
+.milestone-item.is-current .milestone-orb { box-shadow: 0 0 0 4px rgba(255, 221, 128, .24), 0 0 28px 9px rgba(252, 214, 110, .7), 0 8px 18px rgba(12, 5, 2, .7); transform: scale(1.11) translateZ(22px); }
+.milestone-item.is-current .milestone-label { color: #fff9dc; text-shadow: 0 0 10px #ffc760; }
+.journey-milestones { perspective: 700px; }
+.journey-banner { background-size: cover; animation: scene-pan 20s ease-in-out infinite alternate; }
+.journey-arrow:hover { background: rgba(125, 56, 13, .85); box-shadow: 0 0 15px rgba(235, 173, 67, .65); }
+.journey-arrow:focus-visible { outline: 2px solid #ffe39c; outline-offset: 2px; }
+
+/* WordPress menu locations output list items; make them match plain preview links. */
+.nav-links li, .mobile-menu-panel li, .footer-links-col li { list-style: none; margin: 0; padding: 0; }
+.nav-links a { font: 600 12px "Cinzel", Georgia, serif; letter-spacing: .08em; color: #d6be94; text-decoration: none; white-space: nowrap; }
+.nav-links a:hover, .nav-links .current-menu-item a { color: #fae0a2; }
+.footer-links-col li { display: inline; }
+.footer-social-icons a { color: #f5d891; text-decoration: none; margin: 0; }
+.brand-image { display: block; width: auto; max-width: 280px; max-height: 85px; object-fit: contain; }
+.sample-dates-note { text-align: center; font: italic 11px "Crimson Text", Georgia, serif; color: #744a27; margin: 11px 0 0; }
+.navy-empty-note { font: italic 15px/1.3 "Crimson Text", Georgia, serif; color: #d3bb8a; }
+.archive-type { font: 700 10px "Cinzel", Georgia, serif; color: #8b3a1d; letter-spacing: .1em; text-transform: uppercase; }
+.skip-link { position: fixed; top: -100px; left: 10px; z-index: 200; padding: 9px 14px; color: #3b200b; background: #f9e8bf; }
+.skip-link:focus { top: 10px; }
+
+/* Assigned WordPress menus are semantic lists inside the desktop/mobile nav. */
+.nav-links .nav-menu { display: flex; align-items: center; gap: 23px; margin: 0; padding: 0; }
+.mobile-menu-panel .mobile-menu-list { display: contents; padding: 0; margin: 0; }
+.footer-menu-list { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; padding: 0; margin: 0; }
+.footer-menu-list a { margin: 0; }
+
+/* Shortcodes / Elementor Free widgets also receive a finished paper layout. */
+.festival-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 13px; }
+.deity-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 11px; }
+.deity-wrap { display: grid; grid-template-columns: 1fr 205px; gap: 15px; margin-top: 20px; }
+.section-block { padding: 18px 20px 24px; margin: 18px 0; }
+.ribbon { width: fit-content; max-width: 100%; margin: 0 auto; padding: 6px 30px; color: #fff4d2; background: linear-gradient(180deg, #e4b95f, #996720 60%, #6f4711); border: 1px solid #f9de8d; text-align: center; font: 700 17px "Cinzel", Georgia, serif; letter-spacing: .09em; }
+.section-sub { text-align: center; font: italic 15px "Crimson Text", Georgia, serif; color: #5c3c1e; margin: 8px 0 15px; }
+.panchang { padding: 18px 20px; }
+.panchang h3 { font: 700 17px "Cinzel", Georgia, serif; text-align: center; }
+.panchang .divider { height: 1px; background: #a88347; margin: 10px 0 5px; }
+.prow { display: grid; grid-template-columns: 24px 1fr auto; gap: 8px; align-items: center; border-bottom: 1px dashed #b58b56; padding: 8px 0; font: 15px "Crimson Text", Georgia, serif; }
+.prow .ico { text-align: center; }.prow .val { font-weight: 700; }
+.btn { display: inline-flex; justify-content: center; align-items: center; text-align: center; text-decoration: none; border: 1px solid #d2a75d; padding: 9px 17px; background: linear-gradient(#982620, #5d110c); color: #fff1c8; font: 700 12px "Cinzel", Georgia, serif; cursor: pointer; }
+.btn-block { display: flex; margin-top: 14px; }
+.vrat-row { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(190px, 1fr); gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 6px 3px 13px; }
+.vcard, .tool { position: relative; scroll-snap-align: start; padding: 18px 15px; background: linear-gradient(140deg, #f8edce, #ddbb81); border: 1px solid #aa783c; box-shadow: inset 0 0 16px rgba(103, 57, 18, .24), 2px 5px 8px rgba(38, 16, 4, .27); color: #48280f; text-decoration: none; transition: transform .3s, box-shadow .3s; clip-path: var(--tear-shape); }
+.vcard { display: block; text-align: center; }
+.vcard:hover, .tool:hover { transform: perspective(500px) rotateY(-4deg) translateY(-5px); box-shadow: inset 0 0 17px rgba(103, 57, 18, .3), 8px 13px 15px rgba(38, 16, 4, .4); }
+.vt, .tool strong { font: 700 14px "Cinzel", Georgia, serif; }.vd { margin-top: 8px; font-weight: 700; }.vp { font-style: italic; font-size: 13px; }
+.tools-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 17px; }
+.tool { display: flex; align-items: center; gap: 10px; min-height: 68px; }.tool .ti { font-size: 20px; }
+@media (max-width: 1024px) { .festival-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .deity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .deity-wrap { grid-template-columns: 1fr; } .tools-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .festival-grid, .deity-grid, .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .section-block { padding: 15px 12px; } }
+
+/* User-facing 3D toggle. The whole scene remains readable with motion disabled. */
+.motion-toggle {
+  border: 1px solid rgba(235, 188, 90, .75);
+  color: #f2d78d;
+  background: linear-gradient(180deg, rgba(118, 63, 20, .52), rgba(28, 12, 5, .75));
+  font: 600 10px/1 "Cinzel", Georgia, serif;
+  letter-spacing: .1em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 12px;
+  padding: 6px 9px;
+  box-shadow: inset 0 1px rgba(255, 238, 183, .22), 0 2px 5px rgba(0, 0, 0, .45);
+  cursor: pointer;
+}
+.motion-toggle:hover { color: #fff6d8; border-color: #f4cf78; }
+.motion-toggle:focus-visible { outline: 2px solid #fff4d1; outline-offset: 3px; }
+.motion-toggle[aria-pressed="false"] { opacity: .75; }
+
+/* Organic page entrances: class is applied only after JS initializes. */
+.has-motion .reveal-block:not(.is-visible) { opacity: 0; transform: perspective(1000px) translate3d(0, 32px, -22px) rotateX(3deg); }
+.has-motion .reveal-block.is-visible { opacity: 1; transform: none; transition: opacity .8s ease, transform .95s cubic-bezier(.2, .8, .2, 1); }
+.has-motion .reveal-block.is-visible .paper-card-stage { animation: paper-land .72s both cubic-bezier(.2, .75, .22, 1); animation-delay: calc(var(--card-n, 0) * 70ms); }
+
+/* Repeatable gold-red toran border exactly at the base of the royal navy band. */
+.toran-divider {
+  height: 17px;
+  margin-top: 17px;
+  background-color: #701914;
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 7px, rgba(241, 193, 86, .94) 7px 9px, transparent 9px 17px),
+    repeating-linear-gradient(-45deg, transparent 0 7px, rgba(241, 193, 86, .94) 7px 9px, transparent 9px 17px);
+  border-top: 2px solid #d4a952;
+  border-bottom: 2px solid #d4a952;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .55);
+}
+
+@keyframes paper-land { from { transform: translate3d(0, 16px, -20px) rotate(-2deg); opacity: 0; } to { transform: translate3d(0, 0, 0); opacity: 1; } }
+@keyframes bell-swing { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes diya-breathe { 0%, 100% { filter: drop-shadow(0 0 7px rgba(255, 168, 37, .48)); } 50% { filter: drop-shadow(0 0 23px rgba(255, 185, 50, .9)); } }
+@keyframes flower-sway { 0%, 100% { transform: rotate(-12deg) translateY(0); } 50% { transform: rotate(5deg) translateY(-5px); } }
+@keyframes watch-hover { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-5px) rotate(1deg); } }
+@keyframes seal-glow { 0%, 100% { filter: brightness(1) drop-shadow(0 0 2px rgba(239, 175, 59, .2)); } 50% { filter: brightness(1.08) drop-shadow(0 0 9px rgba(239, 175, 59, .55)); } }
+@keyframes photo-breathe { from { filter: saturate(1) contrast(1); } to { filter: saturate(1.13) contrast(1.05); } }
+@keyframes gilded-glint { 0%, 34% { left: -35%; } 54%, 100% { left: 115%; } }
+@keyframes orb-breathe { 0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 105, .65), 0 5px 11px rgba(0, 0, 0, .6); } 50% { box-shadow: 0 0 25px rgba(255, 215, 105, .95), 0 5px 11px rgba(0, 0, 0, .6); } }
+@keyframes scene-pan { from { background-position: 48% 49%; } to { background-position: 54% 53%; } }
+
+/* Interior pages, WordPress archive cards and sidebars also use the same paper. */
+.archive-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+.archive-card { padding: 12px 12px 20px; }
+.archive-name { font: 700 16px/1.25 "Cinzel", Georgia, serif; color: #34200e; margin: 4px 0; }
+.archive-date { color: #871e1a; font: 600 12px/1.3 "Cinzel", Georgia, serif; margin: 5px 0; }
+.main-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 22px; margin: 18px auto 40px; max-width: 1100px; }
+.main-wrap.full { grid-template-columns: 1fr; }
+.paper, .content-paper, .widget.paper { background: linear-gradient(135deg, #f7e9c8, #e7cfa0); color: #3b210e; border: 1px solid #9c7336; box-shadow: inset 0 0 20px rgba(126, 75, 27, .25), 0 10px 20px rgba(0, 0, 0, .5); }
+.content-paper { padding: 28px 32px; }
+.content-paper a { color: #842019; }
+.content-paper h1, .content-paper h2, .widget-title { font-family: "Cinzel", Georgia, serif; color: #37200c; }
+.content-paper h1 { font-size: clamp(26px, 4vw, 40px); }
+.content-paper img { max-width: 100%; height: auto; }
+.entry-meta, .small-note { font: italic 14px "Crimson Text", Georgia, serif; color: #6e4624; }
+.entry-content { font: 18px/1.65 "Crimson Text", Georgia, serif; }
+.entry-content p { margin: 0 0 16px; }
+.facts { display: grid; grid-template-columns: 160px 1fr; gap: 5px 15px; margin: 18px 0; }
+.facts dd { margin: 0; }
+.facts dt { font-weight: 700; }
+.widget.paper { padding: 18px; margin-bottom: 20px; }
+.sidebar a { color: #842019; }
+.breadcrumbs { color: #f6dea8; font: 12px "Cinzel", Georgia, serif; margin: 12px 0; }
+.breadcrumbs a { color: #f8df9f; }
+.content-paper .breadcrumbs { color: #87521a; }
+.content-paper .breadcrumbs a { color: #842019; }
+.share-row, .prev-next { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+.share-row a { display: inline-block; padding: 5px 10px; border: 1px solid #a88046; text-decoration: none; }
+.notice-box { background: #fff3d5; border-left: 3px solid #a88046; padding: 12px; margin: 18px 0; }
+.pagination { margin: 20px auto; text-align: center; }
+.pagination a, .pagination .current { color: #f8dfa5; padding: 4px 9px; }
+.search-form { display: flex; gap: 8px; margin: 14px 0; }
+.search-form input[type="search"] { flex: 1; min-width: 0; padding: 9px 11px; border: 1px solid #ae8a4b; background: #fff9e8; }
+.search-form input[type="submit"] { padding: 8px 15px; color: #fff0c2; background: #742017; border: 1px solid #c99b45; cursor: pointer; }
+.archive-card .archive-photo { width: 100%; }
+.archive-card .archive-photo img { object-fit: cover; }
+
+@media (max-width: 1170px) {
+  .nav-links { gap: 11px; }
+  .nav-link { font-size: 11px; letter-spacing: .06em; }
+  .brand-title { font-size: 21px; }
+}
+@media (max-width: 1024px) {
+  .hero-wrapper { display: block; }
+  .hero-left-note { display: none; }
+  .hero-right-col { position: absolute; right: 9px; top: -8px; z-index: 9; transform: scale(.67); transform-origin: top right; }
+  .ornament-bell--left, .ornament-bell--right { display: none; }
+  .ornament-diya--left { left: -16px !important; width: 85px !important; bottom: -6px !important; }
+  .ornament-flower--right { right: -8px !important; }
+  .deities-and-quote-row .ornament-diya--right { right: -16px; width: 78px; }
+  .main-wrap { grid-template-columns: 1fr; }
+  .archive-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 940px) {
+  .nav-links { display: none; }
+  .main-header { position: relative; justify-content: center; }
+  .mobile-menu-button { display: inline-flex !important; position: absolute; right: 6px; top: 23px; }
+}
+@media (max-width: 700px) {
+  .top-strip { gap: 7px; flex-wrap: wrap; justify-content: center; padding: 8px 0; }
+  .top-strip > div { gap: 7px !important; font-size: 12px; }
+  .search-box { width: min(250px, 72vw); }
+  .hero-center-parchment { grid-template-columns: 1fr; padding: 26px 18px 28px; gap: 20px; }
+  .hero-center-parchment .hero-postcard { max-width: 380px; margin: 0 auto; }
+  .hero-main-title { font-size: clamp(30px, 9vw, 42px); }
+  .hero-right-col { transform: scale(.48); top: -2px; right: -13px; }
+  .hero-wrapper .ornament-flower--right { display: none; }
+  .festival-cards-row, .deity-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+  .popular-and-panchang-row, .deities-and-quote-row { gap: 17px; }
+  .deities-and-quote-row .divine-quote-note { display: none; }
+  .journey-milestones { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .journey-milestones:before { display: block; top: 24px; }
+  .milestone-orb { width: 48px; height: 48px; padding: 8px; }
+  .milestone-label { font-size: 10px; }
+  .journey-banner { padding: 22px 9px 24px; }
+  .journey-arrow { width: 20px; height: 33px; font-size: 19px; }
+  .navy-dashboard { grid-template-columns: 1fr 1fr; }
+  .navy-dash-col { border-bottom: 1px solid rgba(184, 138, 56, .4); }
+  .navy-dash-title { font-size: 12px; }
+  .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content-paper { padding: 20px 16px; }
+}
+@media (max-width: 490px) {
+  .wood-canvas { padding-inline: 12px; }
+  .brand-title { font-size: 19px; }
+  .brand-subtitle { font-size: 8px; }
+  .golden-ribbon { font-size: 14px; padding-inline: 20px; }
+  .torn-card .fest-card-img { height: 115px; }
+  .torn-card .deity-img { height: 125px; }
+  .torn-card .fest-card-title { font-size: 11px; }
+  .torn-card .fest-card-tag { font-size: 11px; }
+  .panchang-parchment { padding: 18px 22px; }
+  .navy-dashboard { grid-template-columns: 1fr; }
+  .navy-dash-col { border-right: 0; }
+  .navy-dash-col:last-child { display: none !important; }
+  .top-strip > div:first-child span:nth-child(n+2) { display: none; }
+  .top-strip > div:last-child span:nth-last-child(-n+3) { display: none; }
+  .archive-grid { gap: 11px; }
+}
+
+/* Final page-specific alignment around the shared paper system. */
+.top-strip-left, .top-strip-right { display: flex; align-items: center; gap: 13px; min-width: 0; }
+.top-divider { opacity: .48; }
+.language-label { color: #d6be94; white-space: nowrap; }
+.language-current { color: #f9dda0; }
+.search-box { margin: 0; padding: 0 8px 0 12px; min-height: 27px; gap: 4px; }
+.search-box input { flex: 1; width: 100%; min-width: 0; background: transparent; border: 0; outline: 0; color: #f8e3b9; font: 13px "Crimson Text", Georgia, serif; }
+.search-box input::placeholder { color: #aa936c; opacity: 1; }
+.search-box input::-webkit-search-cancel-button { cursor: pointer; filter: brightness(2); }
+.search-box:focus-within { border-color: #f8d684; box-shadow: 0 0 0 2px rgba(245, 207, 120, .22); }
+.search-box button { display: grid; place-items: center; padding: 0; width: 20px; height: 22px; border: 0; background: transparent; color: #f4cd74; cursor: pointer; }
+.ornament-svg { width: 20px; height: 20px; flex: 0 0 auto; display: inline-block; vertical-align: middle; }
+.search-box .ornament-svg { width: 16px; height: 16px; }
+.note-shadow { min-width: 0; filter: drop-shadow(3px 8px 5px rgba(15, 5, 1, .65)); }
+.note-shadow > .pinned-note { height: 100%; }
+.hero-left-note .hero-left-note-icon { display: block; width: 31px; height: 31px; margin: 12px auto 0; }
+.hero-title-decoration { display: block; width: 62px; margin: -7px auto 11px; border-bottom: 1px solid #966538; color: #864a24; font-size: 10px; line-height: .5; text-align: center; }
+.hero-copy { text-align: center; }
+.hero-center-parchment { align-content: center; }
+.popular-parchment, .deity-parchment { padding: 17px 18px 22px; }
+.panchang-parchment { justify-content: flex-start; }
+.panchang-parchment .panchang-row { padding-block: 8px; }
+.panchang-parchment .panchang-icon { width: 18px; height: 18px; }
+.panchang-demo-note { font: italic 11px "Crimson Text", Georgia, serif; color: #774923; text-align: center; margin-top: 9px; }
+.journey-sub { color: #fae7be; }
+.journey-icon { width: 42px; height: 42px; }
+.quote-lotus { display: block; width: 28px; height: 28px; margin: 15px auto 0; }
+.deities-and-quote-row { position: relative; }
+.scroll-column { display: flex; align-items: center; justify-content: center; }
+.scroll-lotus { width: 23px; height: 23px; margin-top: 9px; }
+.upcoming-row > span { display: block; }
+.upcoming-name, .upcoming-date { display: block; }
+.quick-link-icon { width: 19px; height: 19px; }
+.toran-divider + .site-footer-exact { margin-top: 0; padding-top: 16px; }
+.footer-om { width: 38px; height: 38px; font-size: 20px; }
+.footer-brand-name { font: 700 14px "Cinzel", Georgia, serif; color: #fae6b8; }
+.footer-brand-sub { font: 9px "Cinzel", Georgia, serif; letter-spacing: .23em; color: #cda24e; }
+.preview-disclaimer { text-align: center; color: #ac916b; font: italic 12px "Crimson Text", Georgia, serif; margin: 15px 0 0; }
+@media (max-width: 940px) { .main-header .center-brand { margin-inline: auto; } .top-strip { flex-wrap: wrap; } }
+@media (max-width: 700px) {
+  .top-strip-left, .top-strip-right { justify-content: center; gap: 8px; }
+  .top-strip .top-strip-left span:nth-child(n+2) { display: none; }
+  .top-strip .language-label { display: none; }
+  .hero-wrapper .hero-right-col { display: none; }
+  .deities-and-quote-row .ornament-diya--right { right: 2px; width: 65px; }
+  .popular-parchment, .deity-parchment { padding: 20px 12px 25px; }
+  .torn-card .deity-role { font-size: 11px; }
+}
+
+/* Interior pages keep the devotional desk aesthetic when a card is opened. */
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.interior-canvas .brand-title { font-size: 21px; }
+.top-return { color: #f0d69a; font: 13px "Crimson Text", Georgia, serif; text-decoration: none; }
+.top-return:hover { text-decoration: underline; }
+.interior-main { padding: 12px 0 34px; }
+.interior-header { padding: 38px 32px 32px; text-align: center; }
+.interior-header h1, .interior-article h1 { font: 700 clamp(32px, 5vw, 52px)/1.1 "Cinzel", Georgia, serif; color: #341c0b; margin: 8px 0; }
+.interior-header > p, .interior-article > p { font: 18px/1.55 "Crimson Text", Georgia, serif; color: #674527; }
+.interior-search { max-width: 620px; margin: 22px auto 0; display: flex; gap: 9px; justify-content: center; }
+.interior-search input { flex: 1; min-width: 0; padding: 10px 15px; font: 16px "Crimson Text", Georgia, serif; border: 1px solid #a6783b; background: #fffae9; color: #3e230e; border-radius: 3px; }
+.interior-search input:focus-visible { outline: 2px solid #8c521d; outline-offset: 2px; }
+.interior-search .hero-center-btn { margin: 0; }
+.interior-result-note { font-size: 14px !important; margin: 15px 0 0; }
+.archive-grid.interior-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin: 27px 6px 18px; }
+.interior-article { max-width: 850px; margin: 0 auto; padding: 35px clamp(20px, 5vw, 50px) 40px; }
+.interior-article h2 { font: 700 24px "Cinzel", Georgia, serif; color: #402312; margin: 27px 0 12px; }
+.interior-breadcrumb { font: 12px "Cinzel", Georgia, serif; color: #8c6036; margin-bottom: 20px; }
+.interior-breadcrumb a { color: #761c17; text-decoration: none; }
+.interior-breadcrumb span { padding-inline: 6px; color: #ad854f; }
+.interior-lead { font: italic 22px/1.3 "Crimson Text", Georgia, serif !important; color: #764923 !important; margin: 8px 0 20px !important; }
+.interior-prose { font: 19px/1.7 "Crimson Text", Georgia, serif !important; color: #4c2b15 !important; }
+.interior-image-wrap { border: 8px solid #f8edcd; outline: 1px solid #986838; box-shadow: 1px 7px 16px rgba(67, 31, 10, .35); margin: 20px 0 28px; height: 325px; overflow: hidden; }
+.interior-feature-img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.interior-facts { display: grid; grid-template-columns: 120px 1fr; gap: 8px 16px; border-block: 1px solid #b8925c; padding: 18px 3px; margin: 18px 0; font: 17px "Crimson Text", Georgia, serif; }
+.interior-facts dt { color: #5d2f15; font-weight: 700; }
+.interior-facts dd { margin: 0; color: #513116; }
+.interior-actions { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; margin-top: 22px; }
+.interior-actions .hero-center-btn { margin: 0; }
+.interior-text-link { color: #802015; font: 700 13px "Cinzel", Georgia, serif; text-decoration: none; }
+.interior-disclaimer { font: italic 13px/1.5 "Crimson Text", Georgia, serif !important; color: #d1b68a !important; text-align: center; margin: 21px auto 0; }
+.interior-article .interior-disclaimer { text-align: left; color: #75502e !important; }
+.deity-detail-layout { display: grid; grid-template-columns: 1fr minmax(240px, 40%); align-items: center; gap: 34px; margin: 25px 0 10px; }
+.deity-detail-photo { max-width: 340px; justify-self: center; }
+.deity-detail-photo .hero-postcard-img { height: 350px; object-position: center 22%; }
+.interior-ribbon { margin-top: 30px; }
+.interior-footer { min-height: 85px; }
+@media (max-width: 800px) {
+  .archive-grid.interior-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .deity-detail-layout { grid-template-columns: 1fr; }
+  .deity-detail-photo { width: min(100%, 360px); }
+}
+@media (max-width: 540px) {
+  .archive-grid.interior-grid { gap: 12px; margin-inline: 0; }
+  .interior-header { padding: 30px 17px; }
+  .interior-search { flex-direction: column; }
+  .interior-article { padding: 28px 18px; }
+  .interior-feature-img { height: 250px; }
+  .interior-image-wrap { height: 250px; }
+}
+
+/* Topic cards and an original shareable wish, framed like small pieces of stationery. */
+.interior-section { margin-top: 24px; }
+.topic-grid .paper-card-stage { min-height: 218px; }
+.topic-card { justify-content: center; padding: 26px 24px; gap: 9px; }
+.topic-card .archive-name { margin: 2px 0; }
+.topic-card .archive-desc { font-size: 16px; max-width: 240px; }
+.topic-emblem { width: 56px; height: 56px; margin: 0 auto 9px; display: grid; place-items: center; border-radius: 50%; background: radial-gradient(circle at 35% 27%, #fff9df, #e2b965 85%); border: 2px solid #a77536; box-shadow: 0 4px 8px rgba(89, 42, 9, .34); transform: translateZ(23px); }
+.topic-emblem .ornament-svg { width: 38px; height: 38px; }
+.topic-card:hover .topic-emblem { box-shadow: 0 7px 13px rgba(89, 42, 9, .5); }
+.wish-maker { margin-top: 20px; }
+.wish-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 13px 18px; }
+.wish-controls label { display: flex; flex-direction: column; gap: 5px; color: #5c3518; font: 700 13px "Cinzel", Georgia, serif; }
+.wish-controls input, .wish-controls select { width: 100%; min-width: 0; padding: 11px 13px; background: #fff9e7; border: 1px solid #a47940; color: #39200c; border-radius: 2px; font: 16px "Crimson Text", Georgia, serif; }
+.wish-controls :is(input,select):focus-visible { outline: 2px solid #7a3e17; outline-offset: 2px; }
+.wish-preview { min-height: 190px; display: grid; align-content: center; gap: 7px; text-align: center; padding: 30px; border: 6px double #a77b40; margin-top: 20px; box-shadow: 0 8px 14px rgba(73, 34, 9, .25); }
+.wish-preview--parchment { background: linear-gradient(130deg, #fff2d0, #d9b77a); color: #44240c; }
+.wish-preview--maroon { background: linear-gradient(130deg, #9d2b20, #3d0c0b); color: #fff0be; border-color: #eac274; }
+.wish-preview--midnight { background: linear-gradient(130deg, #1c3b66, #081329); color: #fff0be; border-color: #d7aa61; }
+.wish-om { font: 39px "Noto Sans Devanagari", serif; }
+.wish-preview p { font: italic 21px/1.5 "Crimson Text", "Noto Sans Devanagari", serif; margin: 0; }
+.wish-preview small { font: 600 11px "Cinzel", Georgia, serif; letter-spacing: .23em; }
+.wish-actions { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-top: 17px; }
+.wish-actions .hero-center-btn { margin: 0; }
+.wish-action { border: 1px solid #9b6b33; background: rgba(255, 246, 222, .9); color: #6f2518; padding: 10px 13px; font: 700 11px "Cinzel", Georgia, serif; text-decoration: none; cursor: pointer; border-radius: 2px; }
+.wish-action:hover { background: #fff8e3; }
+.wish-status { min-height: 24px; font: italic 14px "Crimson Text", Georgia, serif; color: #654020; }
+.sitemap-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0 28px; }
+.sitemap-list a { font: 700 13px "Cinzel", Georgia, serif; color: #77251c; text-decoration: none; padding: 9px; border-bottom: 1px solid #b38b54; }
+.sitemap-list a:hover { background: rgba(255, 249, 225, .7); }
+@media (max-width: 650px) { .wish-controls, .sitemap-list { grid-template-columns: 1fr; } .wish-preview { padding: 22px 17px; } }
+
+/* Mobile navigation sits beneath the centered brand, rather than disappearing. */
+.mobile-menu-button { display: none; align-items: center; justify-content: center; width: 39px; height: 37px; border: 1px solid #bd8b42; border-radius: 4px; background: rgba(28, 13, 4, .8); color: #f5d996; font-size: 22px; cursor: pointer; }
+.mobile-menu-button:focus-visible { outline: 2px solid #fff2c3; outline-offset: 3px; }
+.mobile-menu-panel { display: none; position: absolute; top: calc(100% - 4px); right: 0; width: min(310px, 88vw); padding: 10px 16px 15px; z-index: 40; background: #211106; border: 1px solid #b88a38; box-shadow: 0 17px 28px rgba(0, 0, 0, .75); }
+.mobile-menu-panel.is-open { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.mobile-menu-panel a { display: block; color: #f3dba5; font: 600 12px "Cinzel", Georgia, serif; text-decoration: none; padding: 9px 2px; border-bottom: 1px solid rgba(199, 151, 70, .28); }
+.mobile-menu-panel a:hover { color: white; }
+
+/* A quiet accessible toggle for users who prefer a still version. */
+.motion-off *, .motion-off *:before, .motion-off *:after { animation: none !important; scroll-behavior: auto !important; }
+.motion-off .reveal-block, .motion-off.has-motion .reveal-block { opacity: 1 !important; transform: none !important; transition: none !important; }
+.motion-off .torn-card { --tilt-x: 0deg; --tilt-y: 0deg; --lift-y: 0px; transform: rotate(var(--rest-rotation, 0deg)) !important; }
+.motion-off .hero-postcard { --tilt-x: 0deg; --tilt-y: 0deg; transform: rotate(2deg) !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *:before, *:after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .has-motion .reveal-block { opacity: 1 !important; transform: none !important; }
+  .torn-card { --tilt-x: 0deg; --tilt-y: 0deg; --lift-y: 0px; }
+}
+/* Motion-only refinement: same B design, same layout and depth. The decorative
+   movement is simply slower and more restrained so it feels composed, not suspended. */
+.hero-wrapper .ornament-bell--left, .hero-wrapper .ornament-bell--right { animation-duration: 10.5s; }
+.hero-wrapper .ornament-diya--left, .deities-and-quote-row .ornament-diya--right { animation-duration: 5.2s; }
+.hero-wrapper .ornament-flower--left, .hero-wrapper .ornament-flower--right, .deities-and-quote-row .ornament-flower--deity { animation-duration: 11s; }
+.pocket-watch { animation: none; }
+.hero-postcard-img { animation: none; }
+.journey-banner { animation: none; }
+.wax-seal, .om-circle { animation-duration: 8s; }
+.milestone-orb { animation-duration: 5.8s; }
+.golden-ribbon:after { display: block; animation-duration: 12s; }
+
+/* Keep the original card lift, depth, framed image scale and composition. */
+.torn-card { transition: transform .25s cubic-bezier(.19, 1, .22, 1); }
+.torn-card:hover, .torn-card:focus-visible { --lift-y: -9px; --rest-rotation: 0deg; }
+.torn-card .fest-card-frame, .torn-card .deity-frame, .torn-card .archive-photo { transform: translateZ(17px); transition: transform .28s ease-out, box-shadow .28s ease-out; }
+.torn-card:hover .fest-card-frame, .torn-card:hover .deity-frame, .torn-card:hover .archive-photo,
+.torn-card:focus-visible .fest-card-frame, .torn-card:focus-visible .deity-frame { transform: translateZ(31px) translateY(-2px); }
+.torn-card:hover img, .torn-card:focus-visible img { transform: scale(1.09); }
+.hero-postcard { transition: transform .28s ease-out, box-shadow .28s ease-out; }
+
+/* Slightly shorter entrances; paper, portraits and spacing are unchanged. */
+.has-motion .reveal-block:not(.is-visible) { opacity: 0; transform: translate3d(0, 17px, -8px); }
+.has-motion .reveal-block.is-visible { opacity: 1; transform: none; transition: opacity .58s ease-out, transform .62s ease-out; }
+.has-motion .reveal-block.is-visible .paper-card-stage { animation: paper-rise .44s ease-out both; animation-delay: calc(var(--card-n, 0) * 45ms); }
+@keyframes paper-rise { from { opacity: 0; transform: translate3d(0, 9px, -7px); } to { opacity: 1; transform: none; } }
+
+/* Reduce only the motion amplitudes; the illustration art and its placement stay unchanged. */
+@keyframes bell-swing { 0%, 100% { transform: rotate(-1.4deg); } 50% { transform: rotate(1.4deg); } }
+@keyframes diya-breathe { 0%, 100% { filter: drop-shadow(0 0 11px rgba(255, 168, 37, .56)); } 50% { filter: drop-shadow(0 0 19px rgba(255, 185, 50, .84)); } }
+@keyframes flower-sway { 0%, 100% { transform: rotate(-5deg) translateY(-1px); } 50% { transform: rotate(-2deg) translateY(-4px); } }
+@keyframes watch-hover { 0%, 100% { transform: translateY(-1.5px) rotate(-1.4deg); } 50% { transform: translateY(-3.5px) rotate(-.6deg); } }
+@keyframes seal-glow { 0%, 100% { filter: brightness(1.02) drop-shadow(0 0 4px rgba(239, 175, 59, .3)); } 50% { filter: brightness(1.06) drop-shadow(0 0 7px rgba(239, 175, 59, .5)); } }
+@keyframes photo-breathe { from { filter: saturate(1.035) contrast(1.01); } to { filter: saturate(1.095) contrast(1.04); } }
+@keyframes orb-breathe { 0%, 100% { box-shadow: 0 0 14px rgba(255, 215, 105, .72), 0 5px 11px rgba(0, 0, 0, .6); } 50% { box-shadow: 0 0 21px rgba(255, 215, 105, .9), 0 5px 11px rgba(0, 0, 0, .6); } }
+@keyframes scene-pan { from { background-position: 50% 49.5%; } to { background-position: 52% 50.5%; } }
+
+@media (hover: none), (pointer: coarse) {
+  .torn-card { --tilt-x: 0deg; --tilt-y: 0deg; }
+  .hero-postcard { --tilt-x: 0deg; --tilt-y: 0deg; }
+}
+
+/* ==========================================================================
+   TOOLS RAIL (journey banner style, but every tool, scrolling sideways)
+   ========================================================================== */
+.tools-banner { --accent: #c99b45; }
+.tools-banner .journey-ribbon-pos { background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent) 55%, #3a2208) 70%); }
+.tools-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(150px, 1fr);
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 6px 26px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(247, 215, 134, .45) transparent;
+}
+.tools-track::-webkit-scrollbar { height: 6px; }
+.tools-track::-webkit-scrollbar-thumb { background: rgba(247, 215, 134, .4); border-radius: 999px; }
+.tools-track:focus-visible { outline: 2px solid #ffe39c; outline-offset: 4px; }
+.tools-track::before { display: none; }
+.tool-milestone { text-decoration: none; scroll-snap-align: center; }
+.tool-milestone .milestone-orb {
+  width: 62px;
+  height: 62px;
+  font-size: 24px;
+}
+.tool-milestone:hover .milestone-orb,
+.tool-milestone:focus-visible .milestone-orb { transform: scale(1.07); }
+.tool-blurb {
+  display: block;
+  margin-top: 3px;
+  font: italic 12px/1.25 "Crimson Text", Georgia, serif;
+  color: #e6d3a0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .8);
+}
+
+/* ==========================================================================
+   PAGE VARIETY: each section recolours its ribbons and orbs
+   ========================================================================== */
+.golden-ribbon { background: linear-gradient(180deg, var(--accent, #e4b95f) 0%, color-mix(in srgb, var(--accent, #996720) 55%, #3a2208) 70%); }
+.milestone-orb { border-color: color-mix(in srgb, var(--accent, #ffeaae) 70%, #fff); }
+.ornate-chain-divider .chain-center { color: var(--accent, #d4a74a); }
+.paper-card-stage:hover .fest-card-title, .paper-card-stage:hover .deity-name { color: var(--accent-2, #2b1406); }
+.journey-arrow:hover { border-color: var(--accent, #c99b45); }
+
+/* ==========================================================================
+   ADVERTISING: vertical rails either side, plus slots between sections
+   ========================================================================== */
+.ad-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 5, 2, .35);
+  border: 1px dashed rgba(199, 154, 72, .38);
+  border-radius: 6px;
+  color: #b39663;
+}
+.ad-slot-label { display: grid; gap: 4px; justify-items: center; }
+.ad-slot-word { font: 700 10px/1 "Cinzel", Georgia, serif; letter-spacing: .18em; text-transform: uppercase; }
+.ad-slot-size { font: 11px/1 "Crimson Text", Georgia, serif; opacity: .75; }
+
+/* Horizontal slots between sections. */
+.ad-slot--top { min-height: 90px; max-width: 1000px; margin: 0 auto 18px; }
+.ad-slot--mid, .ad-slot--footer { min-height: 90px; max-width: 1000px; margin: 20px auto; }
+.ad-slot--inGrid { min-height: 250px; max-width: 380px; margin: 4px auto; grid-column: 1 / -1; }
+
+/* Vertical skyscrapers pinned outside the content column. */
+.ad-rail {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 160px;
+  min-height: 600px;
+  z-index: 30;
+}
+.ad-rail--left { left: max(8px, calc(50% - 660px)); }
+.ad-rail--right { right: max(8px, calc(50% - 660px)); }
+
+@media (max-width: 640px) {
+  .tool-milestone .milestone-orb { width: 50px; height: 50px; font-size: 20px; }
+  .tool-milestone .milestone-label { font-size: 11px; }
+  .tools-track { gap: 12px; padding-inline: 18px; }
+  .ad-slot--top, .ad-slot--mid, .ad-slot--footer { min-height: 60px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tools-track { scroll-behavior: auto; }
+}

@@ -1,0 +1,68 @@
+/* Torn-paper profile, kept deliberately subtle.
+   Edges ripple by roughly a pixel rather than looking badly chewed, and the grain
+   overlay is faint, so the parchment reads as texture instead of noise. */
+:root {
+  --tear-shape: polygon(
+    0% .35%, 8% 0%, 17% .5%, 27% .1%, 38% .45%, 50% 0%, 61% .4%, 72% .1%, 83% .5%, 92% 0%, 100% .35%,
+    99.6% 6%, 100% 16%, 99.6% 27%, 100% 38%, 99.5% 50%, 100% 62%, 99.6% 74%, 100% 86%, 99.6% 99.6%,
+    92% 100%, 83% 99.5%, 72% 100%, 61% 99.5%, 50% 100%, 38% 99.5%, 27% 100%, 17% 99.5%, 8% 100%, 0% 99.6%,
+    .4% 86%, 0% 74%, .4% 62%, 0% 50%, .5% 38%, 0% 27%, .4% 16%, 0% 6%
+  );
+  --sheet-tear: polygon(
+    0% .22%, 11% 0%, 23% .3%, 36% 0%, 50% .25%, 63% 0%, 76% .3%, 89% 0%, 100% .22%,
+    99.7% 9%, 100% 25%, 99.7% 41%, 100% 58%, 99.7% 74%, 100% 90%, 99.7% 99.7%,
+    89% 100%, 76% 99.7%, 63% 100%, 50% 99.7%, 36% 100%, 23% 99.7%, 11% 100%, 0% 99.7%,
+    .3% 90%, 0% 74%, .3% 58%, 0% 41%, .3% 25%, 0% 9%
+  );
+}
+
+/* Every third card gets a slightly different ripple so rows are not stamped. */
+.paper-card-stage:nth-child(3n+1) .torn-card { --tear-shape: polygon(
+    0% .4%, 9% .05%, 19% .45%, 30% .1%, 42% .5%, 54% 0%, 66% .4%, 78% .1%, 90% .45%, 100% .05%,
+    99.6% 7%, 100% 19%, 99.6% 31%, 100% 44%, 99.6% 56%, 100% 69%, 99.6% 81%, 100% 93%, 99.6% 99.6%,
+    90% 100%, 78% 99.5%, 66% 100%, 54% 99.5%, 42% 100%, 30% 99.5%, 19% 100%, 9% 99.5%, 0% 99.6%,
+    .4% 93%, 0% 81%, .4% 69%, 0% 56%, .4% 44%, 0% 31%, .4% 19%, 0% 7%
+  ); }
+.paper-card-stage:nth-child(3n+2) .torn-card { --tear-shape: polygon(
+    0% .3%, 10% 0%, 21% .4%, 33% .05%, 45% .4%, 58% .1%, 70% .45%, 82% .05%, 93% .4%, 100% .1%,
+    99.7% 8%, 100% 21%, 99.7% 34%, 100% 47%, 99.7% 60%, 100% 73%, 99.7% 86%, 100% 99.7%,
+    93% 100%, 82% 99.6%, 70% 100%, 58% 99.6%, 45% 100%, 33% 99.6%, 21% 100%, 10% 99.6%, 0% 99.7%,
+    .3% 86%, 0% 73%, .3% 60%, 0% 47%, .3% 34%, 0% 21%, .3% 8%
+  ); }
+
+.torn-card-edge {
+  background: linear-gradient(130deg, #8a5c2c, #cf9f62 30%, #a3743c 78%, #7a4c1e);
+  transform: translate3d(.5px, 1.5px, -2px);
+  opacity: .8;
+}
+
+.parchment-sheet { clip-path: var(--sheet-tear); }
+
+/* Fainter paper grain: texture, not noise. */
+.parchment-sheet:before,
+.pinned-note:before { opacity: .2; }
+
+/* Calmer inset framing on the sheets. */
+.parchment-sheet {
+  box-shadow:
+    inset 0 0 18px rgba(135, 85, 30, .18),
+    inset 0 0 0 2px rgba(255, 240, 205, .35),
+    0 10px 22px rgba(0, 0, 0, .45);
+}
+.parchment-sheet:after { border-color: rgba(120, 76, 27, .1); }
+
+/* Card faces are quieter too: less inner glow, softer double border. */
+.torn-card:before {
+  box-shadow: inset 1px 1px 5px rgba(125, 69, 21, .14), inset -3px -2px 6px rgba(121, 65, 20, .12);
+}
+.torn-card:after {
+  inset: 4px 5px 5px;
+  border-color: rgba(137, 89, 37, .18);
+  opacity: .35;
+}
+.torn-card .fest-card-frame,
+.torn-card .deity-frame,
+.torn-card .archive-photo {
+  border-width: 2px;
+  box-shadow: 0 2px 5px rgba(72, 32, 9, .28);
+}

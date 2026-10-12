@@ -1,0 +1,966 @@
+/*
+Theme Name: Indian Festivals
+Theme URI: https://example.com/indian-festivals
+Author: Indian Festivals Team
+Author URI: https://example.com
+Description: Exact replica of the reference design for Indian Festivals, Panchang, Vrat and Muhurat with rich dark wood textures, burnt torn-edge parchment scrolls, and gold ornamentation.
+Version: 2.4.0
+Requires at least: 5.8
+Tested up to: 6.7
+Requires PHP: 7.4
+License: GPL-2.0-or-later
+Text Domain: indian-festivals
+*/
+
+:root {
+  --wood-bg: #120904;
+  --gold-glow: #f7d788;
+  --gold-border: #b88a38;
+  --gold-accent: #cfa856;
+  --maroon-btn: #801818;
+  --ink-heading: #2d1808;
+  --ink-body: #4a2c14;
+  --ink-muted: #6e4624;
+  --navy-dark: #0a1329;
+  --navy-panel: #112140;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink-heading);
+  font-family: "Cinzel", "Crimson Text", "Georgia", serif;
+  background-color: #120904;
+  background-image:
+    radial-gradient(ellipse 90% 60% at 50% 0%, rgba(130, 72, 28, 0.45) 0%, rgba(35, 18, 8, 0.95) 80%, #0d0602 100%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(20, 10, 4, 0.8) 0px,
+      rgba(45, 23, 10, 0.7) 120px,
+      rgba(25, 12, 5, 0.85) 122px,
+      rgba(60, 32, 14, 0.6) 240px,
+      rgba(18, 9, 3, 0.9) 242px
+    );
+  background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.7) 100%);
+  z-index: 100;
+}
+
+.wood-canvas {
+  position: relative;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 16px 36px;
+  z-index: 10;
+}
+
+/* Top bar with golden thin divider */
+.top-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-family: "Crimson Text", serif;
+  font-size: 13.5px;
+  color: #dfcaa0;
+  border-bottom: 1px solid rgba(198, 154, 67, 0.28);
+}
+
+.search-box {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(10, 5, 2, 0.65);
+  border: 1px solid #7a5a29;
+  border-radius: 999px;
+  padding: 2px 14px;
+  width: 220px;
+  color: #9e8357;
+  font-size: 12px;
+}
+
+/* Main Site Header matching reference */
+.main-header {
+  padding: 12px 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-link {
+  font-family: "Cinzel", serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #d6be94;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: #fae0a2;
+}
+
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: #f7d686;
+}
+
+/* Center Om Emblem Logo */
+.center-brand {
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.om-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid #d4a74a;
+  background: radial-gradient(circle at 40% 35%, #fff2be, #cda24e 60%, #6e4210);
+  box-shadow: 0 0 16px rgba(247, 215, 134, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3b1b05;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+.brand-title {
+  font-family: "Cinzel", serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fae6b8;
+  margin-top: 4px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title-flourish {
+  color: #d4a74a;
+  font-size: 14px;
+}
+
+.brand-subtitle {
+  font-family: "Cinzel", serif;
+  font-size: 9.5px;
+  letter-spacing: 0.35em;
+  color: #c99b45;
+  margin-top: -2px;
+}
+
+/* Decorative Gold Chain Divider */
+.ornate-chain-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 6px 0 18px;
+  opacity: 0.85;
+}
+
+.chain-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #cda24e, transparent);
+}
+
+.chain-center {
+  color: #d4a74a;
+  font-size: 14px;
+}
+
+/* REALISTIC PARCHMENT SCROLL TEXTURE WITH TORN EDGES */
+.parchment-sheet {
+  position: relative;
+  background:
+    radial-gradient(circle at 20% 15%, rgba(255, 250, 235, 0.6), transparent 50%),
+    radial-gradient(circle at 85% 85%, rgba(160, 110, 50, 0.35), transparent 45%),
+    linear-gradient(180deg, #f7ebd1 0%, #ecd8af 45%, #e1c592 100%);
+  border: 1px solid #9c7336;
+  box-shadow:
+    inset 0 0 45px rgba(135, 85, 30, 0.45),
+    inset 0 0 0 3px rgba(255, 240, 205, 0.5),
+    0 14px 28px rgba(0, 0, 0, 0.55),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+  clip-path: polygon(
+    0% 0.8%, 2.5% 0%, 5% 0.6%, 8% 0.2%, 12% 0.8%, 16% 0.1%, 21% 0.7%, 26% 0.2%, 31% 0.9%, 37% 0.1%,
+    43% 0.7%, 49% 0%, 55% 0.8%, 62% 0.2%, 68% 0.9%, 74% 0.1%, 80% 0.8%, 86% 0.2%, 92% 0.7%, 97% 0.1%, 100% 0.9%,
+    99.6% 4%, 100% 9%, 99.4% 15%, 100% 21%, 99.5% 28%, 100% 36%, 99.3% 43%, 100% 51%, 99.5% 59%, 100% 67%,
+    99.4% 75%, 100% 83%, 99.5% 91%, 100% 98.8%,
+    97.5% 99.8%, 94% 99.3%, 89% 100%, 84% 99.2%, 78% 100%, 72% 99.4%, 66% 100%, 60% 99.2%, 53% 100%,
+    47% 99.3%, 41% 100%, 35% 99.1%, 29% 100%, 23% 99.4%, 17% 100%, 11% 99.2%, 6% 100%, 2.5% 99.3%, 0% 99.8%,
+    0.5% 94%, 0% 86%, 0.6% 78%, 0% 70%, 0.5% 61%, 0% 53%, 0.6% 45%, 0% 36%, 0.5% 28%, 0% 20%, 0.6% 12%, 0% 4%
+  );
+}
+
+.pinned-note {
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 252, 240, 0.8), transparent 60%),
+    linear-gradient(175deg, #f5ebd3 0%, #e8d3a7 60%, #dab880 100%);
+  border: 1px solid #a37c3f;
+  box-shadow:
+    inset 0 0 25px rgba(140, 95, 40, 0.45),
+    3px 6px 16px rgba(0, 0, 0, 0.45);
+  clip-path: polygon(
+    0% 1.5%, 3% 0%, 7% 1.2%, 14% 0%, 22% 1.5%, 31% 0%, 42% 1.8%, 53% 0%, 65% 1.5%, 78% 0%, 89% 1.2%, 100% 0.5%,
+    99% 12%, 100% 25%, 98.5% 38%, 100% 52%, 98.5% 67%, 100% 82%, 99% 97%,
+    95% 100%, 84% 98.5%, 72% 100%, 59% 98.5%, 45% 100%, 31% 98.5%, 18% 100%, 6% 98.5%, 0% 100%,
+    1.2% 85%, 0% 70%, 1.5% 54%, 0% 38%, 1.2% 21%, 0% 7%
+  );
+}
+
+.hero-wrapper {
+  display: grid;
+  grid-template-columns: 180px 1fr 140px;
+  gap: 16px;
+  align-items: center;
+  position: relative;
+  padding: 6px 0 16px;
+}
+
+.hero-left-note {
+  transform: rotate(-3deg);
+  padding: 24px 16px;
+  text-align: center;
+  color: #3b2211;
+}
+
+.hero-left-note h4 {
+  font-family: "Crimson Text", "Georgia", serif;
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.25;
+  color: #452410;
+  margin: 0;
+}
+
+.hero-left-note-icon {
+  margin-top: 14px;
+  font-size: 26px;
+  color: #8c4e18;
+}
+
+.hero-center-parchment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 24px 28px;
+  gap: 20px;
+  min-height: 310px;
+  align-items: center;
+}
+
+.hero-subhead {
+  font-family: "Cinzel", serif;
+  font-size: 15px;
+  letter-spacing: 0.35em;
+  color: #5c3e23;
+  margin: 0;
+  text-align: center;
+}
+
+.hero-main-title {
+  font-family: "Cinzel", serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: #2b1406;
+  text-align: center;
+  margin: 8px 0 12px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.hero-desc {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.4;
+  color: #5a381c;
+  text-align: center;
+  margin: 0 auto 18px;
+  max-width: 320px;
+}
+
+.hero-center-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto;
+  padding: 9px 24px;
+  background: linear-gradient(180deg, #881b1b 0%, #5a0c0c 100%);
+  border: 1.5px solid #d4a74a;
+  border-radius: 2px;
+  color: #fce6ba;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.hero-postcard {
+  position: relative;
+  background: #fbf7ec;
+  padding: 7px 7px 28px 7px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.55), 0 2px 4px rgba(0, 0, 0, 0.35);
+  transform: rotate(2deg);
+  border: 1px solid #c9b78e;
+}
+
+.hero-postcard-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #d8caad;
+}
+
+.hero-postcard-caption {
+  position: absolute;
+  bottom: 6px;
+  right: 14px;
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: #4b301a;
+}
+
+.hero-right-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.pocket-watch {
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 35%, #fff1c4 0%, #e2be6c 60%, #8c5b16 100%);
+  border: 4px solid #b8862d;
+  box-shadow:
+    inset 0 0 10px rgba(110, 68, 12, 0.6),
+    0 10px 20px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+  color: #3b200b;
+}
+
+.pocket-watch-date {
+  font-family: "Cinzel", serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 0.95;
+  margin-top: 4px;
+}
+
+.pocket-watch-month {
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #523013;
+}
+
+.wax-seal {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #a41c1c 0%, #6d1010 65%, #3d0707 100%);
+  border: 3px double #d4a74a;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e8a946;
+  font-size: 34px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.popular-and-panchang-row {
+  display: grid;
+  grid-template-columns: 1fr 270px;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.golden-ribbon {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 6px 36px;
+  background: linear-gradient(180deg, #e4b95f 0%, #996720 60%, #6f4711 100%);
+  border: 1.5px solid #f9de8d;
+  color: #fff4d2;
+  font-family: "Cinzel", serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+  clip-path: polygon(0 0, 100% 0, 95% 50%, 100% 100%, 0 100%, 5% 50%);
+}
+
+.ribbon-sub {
+  text-align: center;
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 14.5px;
+  color: #5c3c1e;
+  margin: 4px 0 16px;
+}
+
+.festival-cards-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.fest-card {
+  text-align: center;
+  text-decoration: none;
+  color: #3b200b;
+  display: flex;
+  flex-direction: column;
+}
+
+.fest-card-frame {
+  position: relative;
+  padding: 3px;
+  background: linear-gradient(180deg, #f7eed9, #e0c897);
+  border: 1.5px solid #9e7534;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  margin-bottom: 8px;
+}
+
+.fest-card-img {
+  width: 100%;
+  height: 126px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #ebd8b1;
+}
+
+.fest-card-title {
+  font-family: "Cinzel", serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #2b1406;
+  margin: 0;
+}
+
+.fest-card-date {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #881b1b;
+  margin: 2px 0 0;
+}
+
+.fest-card-tag {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: #634324;
+  margin-top: 1px;
+}
+
+.panchang-parchment {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panchang-heading {
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #2b1406;
+  text-align: center;
+  margin: 0 0 6px;
+}
+
+.panchang-sep {
+  height: 1px;
+  background: #a88347;
+  opacity: 0.5;
+  margin-bottom: 6px;
+}
+
+.panchang-row {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 6px;
+  align-items: center;
+  padding: 6.5px 0;
+  border-bottom: 1px dashed rgba(160, 115, 55, 0.4);
+  font-size: 13.5px;
+}
+
+.panchang-icon {
+  font-size: 15px;
+  color: #88531a;
+  text-align: center;
+}
+
+.panchang-lbl {
+  font-family: "Crimson Text", serif;
+  color: #5c3c1e;
+}
+
+.panchang-val {
+  font-family: "Crimson Text", serif;
+  font-weight: 700;
+  color: #2b1406;
+}
+
+.panchang-btn {
+  margin-top: 14px;
+  padding: 8px 14px;
+  background: linear-gradient(180deg, #881b1b 0%, #5a0c0c 100%);
+  border: 1.5px solid #d4a74a;
+  color: #fae4b6;
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.35);
+}
+
+.journey-banner {
+  margin-top: 22px;
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(8, 16, 20, 0.4) 0%, rgba(8, 16, 20, 0.75) 100%),
+    url("assets/images/hero-varanasi.jpg") center/cover no-repeat;
+  border: 2px solid #b88a38;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 40px rgba(0, 0, 0, 0.8),
+    0 12px 26px rgba(0, 0, 0, 0.6);
+  padding: 24px 20px 28px;
+}
+
+.journey-ribbon-pos {
+  margin-top: -42px;
+  margin-bottom: 2px;
+}
+
+.journey-milestones {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-top: 26px;
+  position: relative;
+  text-align: center;
+}
+
+.journey-milestones::before {
+  content: "";
+  position: absolute;
+  top: 36px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, #ffd779 0 6px, transparent 6px 14px);
+  box-shadow: 0 0 10px #fce28b;
+  z-index: 1;
+}
+
+.milestone-item {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.milestone-orb {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fffbf0 0%, #f6df9d 50%, #b88628 100%);
+  border: 3px solid #ffeaae;
+  box-shadow:
+    0 0 20px rgba(255, 222, 133, 0.8),
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #3d2109;
+  margin-bottom: 8px;
+}
+
+.milestone-label {
+  font-family: "Cinzel", serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fff3d0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.journey-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f7d686;
+  font-size: 28px;
+  background: rgba(15, 8, 3, 0.6);
+  border: 1px solid #c99b45;
+  width: 32px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 5;
+}
+.journey-arrow.left { left: 8px; }
+.journey-arrow.right { right: 8px; }
+
+.deities-and-quote-row {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 16px;
+  margin-top: 22px;
+  align-items: stretch;
+}
+
+.deity-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.deity-card {
+  text-align: center;
+  text-decoration: none;
+  color: #3b200b;
+  display: flex;
+  flex-direction: column;
+}
+
+.deity-frame {
+  padding: 3px;
+  background: linear-gradient(180deg, #f7eed9, #e0c897);
+  border: 1.5px solid #9e7534;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  margin-bottom: 6px;
+}
+
+.deity-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #ebd8b1;
+}
+
+.deity-name {
+  font-family: "Cinzel", serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #2b1406;
+  margin: 0;
+}
+
+.deity-role {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 12px;
+  color: #634324;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.divine-quote-note {
+  transform: rotate(2deg);
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #3d220f;
+}
+
+.divine-quote-text {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.45;
+  color: #3b1f0c;
+  margin: 0;
+}
+
+.navy-dashboard {
+  margin-top: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, #173268 0%, #0d1a38 60%, #081024 100%);
+  border: 2px solid #b88a38;
+  border-radius: 4px;
+  box-shadow:
+    inset 0 0 0 3px rgba(10, 20, 45, 0.95),
+    inset 0 0 0 4.5px rgba(200, 155, 70, 0.5),
+    0 14px 28px rgba(0, 0, 0, 0.65);
+  display: grid;
+  grid-template-columns: 260px 1.2fr 1fr 180px;
+  color: #e9dbb5;
+}
+
+.navy-dash-col {
+  padding: 16px 18px;
+  border-right: 1px solid rgba(184, 138, 56, 0.35);
+}
+
+.navy-dash-col:last-child {
+  border-right: none;
+}
+
+.navy-dash-title {
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fad888;
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mini-cal-header {
+  font-family: "Cinzel", serif;
+  font-size: 13.5px;
+  color: #dfcaa0;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.mini-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.cal-day-name {
+  color: #a89163;
+  font-size: 10.5px;
+  padding-bottom: 4px;
+}
+
+.cal-cell {
+  padding: 4px 0;
+  border-radius: 50%;
+  color: #dfcaa0;
+}
+
+.cal-cell.today {
+  background: #f7d686;
+  color: #1f1107;
+  font-weight: 700;
+}
+
+.upcoming-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(184, 138, 56, 0.28);
+  text-decoration: none;
+  color: inherit;
+}
+
+.upcoming-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 2px;
+  border: 1.5px solid #d4a74a;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.upcoming-name {
+  font-family: "Cinzel", serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #f7e1b2;
+  margin: 0;
+}
+
+.upcoming-date {
+  font-size: 12px;
+  color: #ba9d68;
+}
+
+.days-pill {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 7px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff2c8;
+  background: #881b1b;
+  border: 1px solid #c99b45;
+  border-radius: 2px;
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  font-size: 13.5px;
+  color: #e5d7b5;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(184, 138, 56, 0.25);
+}
+
+.quick-link-icon {
+  width: 18px;
+  text-align: center;
+  color: #fad888;
+}
+
+.sanskrit-scroll-card {
+  padding: 24px 12px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 30%, #fff2cf 0%, #edd8a8 60%, #deb776 100%);
+  border: 1px solid #a37c3f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  color: #3b200b;
+}
+
+.sanskrit-devanagari {
+  font-family: "Noto Sans Devanagari", serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #2b1406;
+}
+
+.site-footer-exact {
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1.5px solid rgba(184, 138, 56, 0.4);
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  align-items: center;
+  gap: 16px;
+  color: #d6be94;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-shloka {
+  text-align: center;
+}
+
+.footer-shloka-main {
+  font-family: "Noto Sans Devanagari", serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fae4b6;
+}
+
+.footer-shloka-sub {
+  font-family: "Crimson Text", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: #bfa577;
+}
+
+.footer-links-col {
+  text-align: right;
+  font-size: 12.5px;
+}
+
+.footer-links-col a {
+  color: #dfcaa0;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.footer-social-icons {
+  margin-top: 6px;
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
+  color: #fae0a2;
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .hero-wrapper { grid-template-columns: 1fr; }
+  .popular-and-panchang-row { grid-template-columns: 1fr; }
+  .deities-and-quote-row { grid-template-columns: 1fr; }
+  .navy-dashboard { grid-template-columns: 1fr 1fr; }
+  .festival-cards-row { grid-template-columns: repeat(3, 1fr); }
+  .deity-cards-grid { grid-template-columns: repeat(3, 1fr); }
+  .site-footer-exact { grid-template-columns: 1fr; text-align: center; }
+  .footer-links-col { text-align: center; }
+  .footer-social-icons { justify-content: center; }
+}
+
+@media (max-width: 640px) {
+  .nav-links { display: none; }
+  .festival-cards-row { grid-template-columns: repeat(2, 1fr); }
+  .deity-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .journey-milestones { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .journey-milestones::before { display: none; }
+  .navy-dashboard { grid-template-columns: 1fr; }
+}

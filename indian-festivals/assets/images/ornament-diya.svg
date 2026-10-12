@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="170" height="142" viewBox="0 0 170 142" fill="none">
+  <defs>
+    <radialGradient id="halo"><stop stop-color="#ffd663" stop-opacity=".8"/><stop offset=".4" stop-color="#e38c18" stop-opacity=".25"/><stop offset="1" stop-color="#ffbf45" stop-opacity="0"/></radialGradient>
+    <linearGradient id="brass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#4b2007"/><stop offset=".27" stop-color="#e6ae42"/><stop offset=".45" stop-color="#fff0a1"/><stop offset=".68" stop-color="#ad6a15"/><stop offset="1" stop-color="#422009"/></linearGradient>
+    <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fffce1"/><stop offset=".4" stop-color="#fff5ab"/><stop offset=".75" stop-color="#f7a21e"/><stop offset="1" stop-color="#c45a04"/></linearGradient>
+    <filter id="lift" x="-25%" y="-30%" width="150%" height="170%"><feDropShadow dx="2" dy="6" stdDeviation="4" flood-color="#000" flood-opacity=".8"/></filter>
+  </defs>
+  <ellipse cx="85" cy="66" rx="61" ry="59" fill="url(#halo)"/>
+  <g filter="url(#lift)">
+    <path d="M85 14c-4 12-21 27-16 44 2 8 7 12 16 12s15-6 16-15C104 40 92 27 85 14Z" fill="url(#flame)" stroke="#a85a07" stroke-width="1"/>
+    <path d="M86 35c-2 9-11 16-8 25 1 4 4 6 8 6 8 0 10-10 6-17-2-5-5-9-6-14Z" fill="#fffde4"/>
+    <path d="M82 68v11" stroke="#32200e" stroke-width="3"/>
+    <ellipse cx="85" cy="87" rx="74" ry="15" fill="url(#brass)" stroke="#4c280b" stroke-width="2"/>
+    <path d="M13 86c5 28 28 39 72 39 44 0 67-11 72-39-19 13-52 18-72 18s-53-5-72-18Z" fill="url(#brass)" stroke="#4c280b" stroke-width="2"/>
+    <ellipse cx="85" cy="86" rx="69" ry="10" fill="#5b2b0c"/>
+    <ellipse cx="85" cy="84" rx="50" ry="6" fill="#99621c" opacity=".8"/>
+    <path d="M25 103c20 16 98 19 120 0" stroke="#fff1a2" stroke-width="2" opacity=".7"/>
+    <path d="M58 125c4 7 49 7 54 0" stroke="#462009" stroke-width="2"/>
+    <path d="M66 127v7m38-7v7" stroke="#4b2609" stroke-width="4"/>
+    <ellipse cx="85" cy="136" rx="33" ry="5" fill="url(#brass)" stroke="#56300a" stroke-width="2"/>
+  </g>
+</svg>

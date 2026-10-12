@@ -1,0 +1,638 @@
+/* ==========================================================================
+   Drik Panchang inspired palette. Same layout, cards and components as the
+   current design, recoloured: warm cream page, deep maroon header and panels,
+   saffron highlights, white content cards. Loaded last so it overrides colours
+   only and never changes structure.
+   ========================================================================== */
+:root {
+  --dp-maroon: #8b1416;
+  --dp-maroon-dark: #5e0b0d;
+  --dp-maroon-deep: #47080a;
+  --dp-saffron: #e8740c;
+  --dp-saffron-light: #f7a23b;
+  --dp-gold: #f2b33d;
+  --dp-cream: #fbf4e8;
+  --dp-card: #fffdf8;
+  --dp-border: #ecd6b4;
+  --dp-ink: #2e2420;
+  --dp-ink-soft: #5d4a3c;
+  --rail-w: 120px;
+  --rail-gap: 14px;
+  --canvas-w: 1140px;
+}
+
+/* Page */
+body {
+  background-color: var(--dp-cream);
+  background-image:
+    radial-gradient(circle at 12% 0%, rgba(232, 116, 12, .08), transparent 42%),
+    radial-gradient(circle at 88% 100%, rgba(139, 20, 22, .06), transparent 45%);
+  background-attachment: fixed;
+  color: var(--dp-ink);
+}
+body::before, body::after { display: none; }
+.wood-canvas { max-width: var(--canvas-w); padding-top: 12px; }
+
+/* Header: maroon band like Drik Panchang */
+.top-strip {
+  background: var(--dp-maroon-deep);
+  color: #f9dfb6;
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  padding: 7px 16px;
+}
+.top-strip a, .top-return { color: #ffd38a; }
+.top-divider { color: rgba(255, 220, 160, .45); }
+.language-label { color: #f2cf9c; }
+.language-current { color: #fff; }
+.search-box {
+  background: rgba(255, 255, 255, .1);
+  border-color: rgba(247, 162, 59, .7);
+}
+.search-box input { color: #fff; }
+.search-box input::placeholder { color: #f0c995; }
+.search-box button { color: var(--dp-gold); }
+.motion-toggle { background: rgba(255, 255, 255, .08); border-color: rgba(247, 162, 59, .6); color: #ffd38a; }
+.location-chip {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(255, 211, 138, .6);
+}
+.location-chip:hover, .location-chip:focus-visible { color: #fff; outline: none; border-bottom-color: #fff; }
+
+.main-header {
+  background: linear-gradient(180deg, var(--dp-maroon) 0%, var(--dp-maroon-dark) 100%);
+  border-radius: 0 0 10px 10px;
+  padding: 12px 22px 12px;
+  box-shadow: 0 6px 16px rgba(94, 11, 13, .25);
+  border-bottom: 3px solid var(--dp-saffron);
+}
+.nav-link, .nav-links a { color: #fbe2bc; }
+.nav-link:hover, .nav-link.active, .nav-links a:hover { color: #ffcf6a; }
+.nav-link.active::after { background: var(--dp-gold); }
+.brand-title { color: #fff6e0; text-shadow: 0 2px 6px rgba(0, 0, 0, .35); }
+.brand-title-flourish { color: var(--dp-gold); }
+.brand-subtitle { color: var(--dp-gold); }
+.mobile-menu-button { background: rgba(0, 0, 0, .2); border-color: var(--dp-gold); color: #ffe2a8; }
+.mobile-menu-panel { background: var(--dp-maroon-dark); border-color: var(--dp-saffron); }
+.mobile-menu-panel a { color: #fbe2bc; border-bottom-color: rgba(247, 162, 59, .3); }
+
+.ornate-chain-divider { margin: 12px 0 18px; }
+.chain-line { background: linear-gradient(90deg, transparent, var(--dp-saffron), transparent); }
+.chain-center { color: var(--dp-saffron); }
+
+/* Paper sections become clean cream cards with a thin saffron top rule. */
+.parchment-sheet {
+  background: var(--dp-card);
+  border: 1px solid var(--dp-border);
+  box-shadow: 0 4px 14px rgba(94, 40, 10, .08);
+}
+.parchment-sheet::before { opacity: .08; }
+.sheet-shadow { filter: drop-shadow(0 2px 3px rgba(94, 40, 10, .1)); }
+.popular-parchment, .deity-parchment, .panchang-parchment, .interior-header, .interior-article {
+  border-top: 4px solid var(--accent, var(--dp-saffron));
+}
+.pinned-note {
+  background: linear-gradient(175deg, #fffaf0, #fbe8c8);
+  border-color: var(--dp-border);
+}
+.note-shadow { filter: drop-shadow(0 3px 6px rgba(94, 40, 10, .12)); }
+
+/* Type colours */
+.hero-subhead { color: var(--dp-saffron); }
+.hero-main-title, .interior-header h1, .interior-article h1 { color: var(--dp-maroon); text-shadow: none; }
+.hero-desc, .ribbon-sub, .interior-prose { color: var(--dp-ink-soft) !important; }
+.hero-left-note h4, .divine-quote-text { color: var(--dp-maroon-dark); }
+.hero-title-decoration { color: var(--dp-saffron); border-bottom-color: var(--dp-border); }
+.fest-card-title, .deity-name, .archive-name, .panchang-heading { color: var(--dp-maroon); }
+.fest-card-date, .archive-date { color: var(--dp-saffron); }
+.fest-card-tag, .deity-role, .archive-desc { color: var(--dp-ink-soft); }
+.panchang-lbl { color: var(--dp-ink-soft); }
+.panchang-val { color: var(--dp-ink); }
+.panchang-sep { background: var(--dp-border); opacity: 1; }
+.panchang-row { border-bottom-color: #f0e2cc; }
+.panchang-demo-note, .sample-dates-note { color: #8a6a4a; }
+
+/* Ribbons: saffron to maroon, the Drik Panchang heading treatment. */
+.golden-ribbon {
+  background: linear-gradient(180deg, var(--dp-saffron-light) 0%, var(--dp-saffron) 45%, #b8480f 100%) !important;
+  border-color: #ffd28a;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(94, 11, 13, .55);
+}
+
+/* Buttons */
+.hero-center-btn, .panchang-btn, .btn {
+  background: linear-gradient(180deg, #a51d1f 0%, var(--dp-maroon-dark) 100%);
+  border-color: var(--dp-gold);
+  color: #fff4dc;
+}
+.hero-center-btn:hover, .panchang-btn:hover { filter: brightness(1.1); }
+
+/* Cards stay paper-like but whiter and calmer. */
+.torn-card:before {
+  background-image: none !important;
+  background-color: #fffdf8 !important;
+}
+.torn-card-edge { background: linear-gradient(130deg, #e7c48f, #f2dcb4 50%, #e3bd84) !important; opacity: .9; }
+.torn-card .fest-card-frame, .torn-card .deity-frame, .torn-card .archive-photo { border-color: #fff; outline-color: var(--dp-border); }
+.paper-card-stage { filter: drop-shadow(0 2px 4px rgba(94, 40, 10, .14)); }
+.paper-card-stage:hover { filter: drop-shadow(0 8px 14px rgba(94, 40, 10, .22)); }
+
+/* Maroon panels replace the dark landscape and navy blocks. */
+.journey-banner, .tools-banner {
+  background: linear-gradient(135deg, var(--dp-maroon) 0%, var(--dp-maroon-deep) 100%) !important;
+  border: 0;
+  border-top: 4px solid var(--dp-saffron);
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(94, 11, 13, .22);
+}
+.journey-sub { color: #fbdfb3 !important; }
+.navy-dashboard {
+  background: linear-gradient(160deg, var(--dp-maroon) 0%, var(--dp-maroon-deep) 100%);
+  border: 0;
+  border-top: 4px solid var(--dp-saffron);
+  border-radius: 12px;
+  box-shadow: 0 8px 22px rgba(94, 11, 13, .22);
+  color: #fbe2bc;
+}
+.navy-dash-col { border-right-color: rgba(247, 162, 59, .25); }
+.navy-dash-title { color: var(--dp-gold); }
+.mini-cal-header, .cal-cell { color: #fbe2bc; }
+.cal-day-name { color: #e6b98a; }
+.cal-cell.today { background: var(--dp-gold); color: var(--dp-maroon-deep); }
+.upcoming-name { color: #fff3dc; }
+.upcoming-date { color: #e9c08e; }
+.days-pill { background: var(--dp-saffron); border-color: #ffd28a; color: #fff; }
+.quick-link-item { color: #fbe2bc; border-bottom-color: rgba(247, 162, 59, .22); }
+.quick-link-item:hover { color: #fff; }
+
+/* Footer: maroon band */
+.toran-divider { margin-top: 22px; }
+.site-footer-exact {
+  background: var(--dp-maroon-deep);
+  border-top: 3px solid var(--dp-saffron);
+  border-radius: 0 0 10px 10px;
+  padding: 18px 22px;
+  color: #f2d3a3;
+}
+.site-footer-exact a, .footer-links-col a { color: #f9dfb6; }
+.footer-brand-name { color: #fff3dc; }
+.footer-shloka-main { color: var(--dp-gold); }
+.footer-shloka-sub { color: #e2bf8c; }
+.footer-social-icons { color: var(--dp-gold); }
+.preview-disclaimer, .interior-disclaimer { color: #8a6a4a !important; }
+.interior-breadcrumb a, .interior-text-link, .content-paper a { color: var(--dp-maroon); }
+
+/* ==========================================================================
+   Tools: every tool visible, large clear icons
+   ========================================================================== */
+.tools-banner { padding: 30px 26px 28px; }
+.tools-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 4px 0 20px;
+}
+.tools-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(247, 162, 59, .55);
+  background: rgba(255, 255, 255, .06);
+  color: #fbe2bc;
+  font: 700 12px/1 "Cinzel", Georgia, serif;
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+.tools-filter:hover { background: rgba(255, 255, 255, .14); }
+.tools-filter.is-active { background: var(--dp-gold); color: var(--dp-maroon-deep); border-color: var(--dp-gold); }
+.tools-filter:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.tools-filter-count {
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, .22);
+  font-size: 11px;
+}
+.tools-filter.is-active .tools-filter-count { background: rgba(94, 11, 13, .15); }
+
+.tools-grid-big {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+}
+.tool-tile-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 18px 10px 14px;
+  background: var(--dp-card);
+  border: 1px solid #f3dcb7;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--dp-ink);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .18);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.tool-tile-big:hover, .tool-tile-big:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .28);
+  outline: none;
+}
+.tool-tile-big:focus-visible { box-shadow: 0 0 0 3px var(--dp-gold), 0 10px 20px rgba(0, 0, 0, .28); }
+.tool-tile-orb {
+  width: 84px;
+  height: 84px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fffaf0 0%, #ffe1ad 55%, #f6b356 100%);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--dp-saffron), 0 6px 12px rgba(122, 40, 0, .25);
+}
+.tool-tile-icon {
+  width: 54px;
+  height: 54px;
+  filter: contrast(1.25) saturate(1.25) drop-shadow(0 1px 0 rgba(255, 255, 255, .6));
+}
+.tool-tile-name {
+  margin-top: 12px;
+  font: 700 14.5px/1.2 "Cinzel", Georgia, serif;
+  color: var(--dp-maroon);
+}
+.tool-tile-blurb {
+  margin-top: 5px;
+  font: 14px/1.3 "Crimson Text", Georgia, serif;
+  color: var(--dp-ink-soft);
+}
+.tool-tile-go {
+  margin-top: auto;
+  padding-top: 10px;
+  font: 700 11px/1 "Cinzel", Georgia, serif;
+  letter-spacing: .06em;
+  color: var(--dp-saffron);
+}
+
+/* ==========================================================================
+   Ads: left/right skyscrapers on every page from 1100px, content slots inside
+   ========================================================================== */
+.ad-slot {
+  background: #fff;
+  border: 1px dashed #dfbf8f;
+  color: #a0805a;
+  border-radius: 8px;
+}
+.ad-slot--inGrid { min-height: 250px; max-width: 336px; margin: 22px auto; }
+
+/* Skyscraper rails: geometry applies at every width. Whether they show, and from
+   what width, is set in Theme Options > Advertisement (see ifs_theme_option_css). */
+:root { --canvas-w: min(1140px, calc(100vw - 2 * (var(--rail-w) + var(--rail-gap) * 2))); }
+.ad-rail {
+  display: flex;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--rail-w);
+  min-height: 600px;
+  z-index: 30;
+}
+.ad-rail > .ad-slot { width: 100%; min-height: 600px; }
+.ad-rail--left { left: max(6px, calc(50% - var(--canvas-w) / 2 - var(--rail-w) - var(--rail-gap))); right: auto; }
+.ad-rail--right { right: max(6px, calc(50% - var(--canvas-w) / 2 - var(--rail-w) - var(--rail-gap))); left: auto; }
+@media (min-width: 1500px) {
+  :root { --rail-w: 160px; }
+}
+
+@media (max-width: 1100px) { .tools-grid-big { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .tools-grid-big { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .tool-tile-orb { width: 70px; height: 70px; }
+  .tool-tile-icon { width: 44px; height: 44px; }
+  .main-header { padding: 12px 14px; }
+}
+@media (max-width: 480px) {
+  .tools-grid-big { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tools-banner { padding: 26px 12px 18px; }
+  .tool-tile-name { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tool-tile-big { transition: none; }
+}
+
+/* ==========================================================================
+   Festival detail, Drik Panchang style: location/year bar, maroon banner,
+   olive date card + image, green timings ribbon, red muhurat lines on cream.
+   ========================================================================== */
+.dp-festhead { margin: 6px 0 0; }
+
+/* Location + year selector row */
+.dp-locbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #f3e3c4;
+  border: 1px solid var(--dp-border);
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 14px;
+}
+.dp-locfield, .dp-yearfield {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid #d9b98a;
+  border-radius: 4px;
+  padding: 5px 9px;
+}
+.dp-locfield input { width: 170px; border: 0; outline: 0; font: 14px "Crimson Text", Georgia, serif; color: var(--dp-ink); background: transparent; }
+.dp-yearfield input { width: 64px; border: 0; outline: 0; font: 700 14px "Crimson Text", Georgia, serif; color: var(--dp-ink); background: transparent; }
+.dp-yearnav { display: inline-flex; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.dp-yearnav a, .dp-yearnav span {
+  padding: 6px 14px;
+  border-radius: 4px;
+  background: var(--dp-maroon);
+  color: #ffe9c4;
+  font: 700 12px "Cinzel", Georgia, serif;
+  text-decoration: none;
+}
+.dp-yearnav a:hover { background: var(--dp-maroon-dark); color: #fff; }
+.dp-yearnav .is-disabled { opacity: .45; }
+
+/* Maroon banner */
+.dp-banner {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  background: linear-gradient(180deg, var(--dp-maroon), var(--dp-maroon-dark));
+  color: #ffe9c4;
+  font: 600 14px "Cinzel", Georgia, serif;
+  padding: 10px 18px;
+}
+
+/* Olive date card + framed image */
+.dp-hero-cards {
+  display: grid;
+  grid-template-columns: minmax(220px, 330px) 1fr;
+  gap: 18px;
+  background: var(--dp-maroon-dark);
+  padding: 4px 18px 18px;
+  border-radius: 0 0 10px 10px;
+}
+.dp-datecard {
+  background: linear-gradient(180deg, #8a8a2e, #6e6e22);
+  border: 4px solid #fff;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .3);
+  color: #fff;
+  text-align: center;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dp-datecard p { margin: 0; }
+.dp-datecard-name { font: 700 19px "Cinzel", Georgia, serif; color: #ffe9a8; }
+.dp-datecard-day { font: 800 clamp(64px, 8vw, 96px)/1 "Cinzel", Georgia, serif; margin: 6px 0 !important; text-shadow: 0 3px 0 rgba(0,0,0,.25); }
+.dp-datecard-month { font: 700 22px "Cinzel", Georgia, serif; color: #ffe9a8; }
+.dp-datecard-week { margin-top: 10px !important; font: italic 700 17px "Crimson Text", Georgia, serif; }
+.dp-imagecard {
+  border: 4px solid #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .3);
+  min-height: 240px;
+  background: #2c1a10;
+}
+.dp-imagecard img { display: block; width: 100%; height: 100%; min-height: 240px; max-height: 380px; object-fit: cover; object-position: top center; }
+
+/* Sub-page tabs */
+.dp-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0 0; }
+.dp-tabs a {
+  padding: 9px 20px;
+  border-radius: 8px 8px 0 0;
+  background: #f3e3c4;
+  border: 1px solid var(--dp-border);
+  border-bottom: 0;
+  color: var(--dp-maroon);
+  font: 700 13px "Cinzel", Georgia, serif;
+  text-decoration: none;
+}
+.dp-tabs a:hover { background: #fff; }
+.dp-tabs a.is-active { background: var(--dp-card); color: var(--dp-saffron); border-top: 3px solid var(--dp-saffron); }
+
+/* Timings card */
+.dp-timings { margin-bottom: 22px; }
+.dp-timings-ribbon {
+  display: inline-block;
+  margin: 18px 0 0;
+  background: linear-gradient(180deg, #5d8a3a, #3f6627);
+  color: #fff;
+  font: 700 16px "Cinzel", Georgia, serif;
+  padding: 8px 22px;
+  border-radius: 4px 4px 0 0;
+}
+.dp-timings-body {
+  background: var(--dp-card);
+  border: 1px solid var(--dp-border);
+  border-radius: 0 10px 10px 10px;
+  padding: 18px 22px 20px;
+}
+.dp-format { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; }
+.dp-format button {
+  border: 0;
+  background: none;
+  padding: 4px 6px;
+  font: 700 13px "Crimson Text", Georgia, serif;
+  color: #8a6a4a;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.dp-format button.is-active { color: var(--dp-maroon); border-bottom-color: var(--dp-saffron); }
+.dp-timings-on { text-align: center; font: 17px "Crimson Text", Georgia, serif; color: var(--dp-ink); margin: 0 0 14px; }
+.dp-muhurat { text-align: center; margin: 14px 0; }
+.dp-muhurat-line { margin: 0; font: 700 19px/1.4 "Crimson Text", Georgia, serif; color: #a51d1f; }
+.dp-duration { margin: 2px 0 0; font: 15px "Crimson Text", Georgia, serif; color: var(--dp-ink-soft); }
+.dp-tithis { display: grid; gap: 4px; margin: 16px 0 6px; font: 16px "Crimson Text", Georgia, serif; color: var(--dp-ink); }
+.dp-tithis > div { display: flex; gap: 8px; flex-wrap: wrap; }
+.dp-tithis dt { font-weight: 700; }
+.dp-tithis dd { margin: 0; }
+.dp-links { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin: 14px 0; font: 16px "Crimson Text", Georgia, serif; }
+.dp-links a { color: var(--dp-maroon); }
+.dp-katha {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  max-width: 520px;
+  margin: 12px auto;
+  background: linear-gradient(180deg, #fbd98f, #f5b95c);
+  border: 1px solid #d99a35;
+  border-radius: 6px;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--dp-maroon-dark);
+}
+.dp-katha:hover { filter: brightness(1.04); }
+.dp-katha-icon { font-size: 34px; }
+.dp-katha strong { display: block; font: 700 17px "Crimson Text", Georgia, serif; }
+.dp-katha small { font: italic 14px "Crimson Text", Georgia, serif; }
+.dp-notes {
+  margin: 16px 0 0;
+  background: #f8ecd4;
+  border: 1px solid var(--dp-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font: 13.5px/1.5 "Crimson Text", Georgia, serif;
+  color: var(--dp-ink-soft);
+}
+
+/* Article body on About / Muhurat / Summary pages */
+.dp-article {
+  background: var(--dp-card);
+  border: 1px solid var(--dp-border);
+  border-radius: 0 10px 10px 10px;
+  padding: 24px 28px;
+}
+.dp-article h2 { font: 700 24px "Cinzel", Georgia, serif; color: var(--dp-maroon); margin: 0 0 12px; }
+.dp-article h3 { font: 700 19px "Cinzel", Georgia, serif; color: var(--dp-maroon); margin: 24px 0 8px; }
+.dp-article p { font: 18px/1.75 "Crimson Text", Georgia, serif; color: var(--dp-ink); margin: 0 0 16px; }
+.dp-facts { display: grid; grid-template-columns: 150px 1fr; gap: 8px 16px; background: #f8ecd4; border: 1px solid var(--dp-border); border-radius: 8px; padding: 16px 18px; margin: 0 0 18px; font: 16px "Crimson Text", Georgia, serif; }
+.dp-facts dt { font-weight: 700; color: var(--dp-maroon); }
+.dp-facts dd { margin: 0; }
+.dp-siblings { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 0; }
+.dp-siblings a {
+  padding: 8px 16px;
+  border: 1px solid var(--dp-border);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--dp-maroon);
+  font: 700 13px "Cinzel", Georgia, serif;
+  text-decoration: none;
+}
+.dp-siblings a:hover { border-color: var(--dp-saffron); }
+
+@media (max-width: 760px) {
+  .dp-hero-cards { grid-template-columns: 1fr; }
+  .dp-banner { font-size: 12px; }
+  .dp-yearnav { margin-left: 0; }
+  .dp-article { padding: 18px 16px; }
+  .dp-facts { grid-template-columns: 1fr; gap: 2px; }
+  .dp-muhurat-line { font-size: 17px; }
+}
+
+/* Sub-page links inside archive cards (Drik's top-ten style). */
+.archive-sublinks { display: flex; gap: 7px; justify-content: center; align-items: center; margin-top: 8px; font: 700 12.5px "Cinzel", Georgia, serif; transform: translateZ(12px); position: relative; z-index: 5; }
+.archive-sublinks a { color: var(--dp-saffron); text-decoration: underline; text-underline-offset: 3px; }
+.archive-sublinks a:hover { color: var(--dp-maroon); }
+.archive-sublinks span { color: #c9a06a; }
+
+/* Archive card uses a div shell so sub-links are valid siblings of the main link. */
+.archive-main-link { display: contents; color: inherit; text-decoration: none; }
+.archive-card.torn-card:hover .archive-main-link .archive-photo img { transform: scale(1.06); }
+
+/* ==========================================================================
+   Year calendar: 12 month grids with festival names on dates.
+   ========================================================================== */
+.cal-yearnav { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+.cal-yearnav a {
+  padding: 8px 22px;
+  border-radius: 999px;
+  border: 1px solid var(--dp-border);
+  background: #fff;
+  color: var(--dp-maroon);
+  font: 700 13px "Cinzel", Georgia, serif;
+  text-decoration: none;
+}
+.cal-yearnav a.is-active { background: var(--dp-maroon); color: #ffe9c4; border-color: var(--dp-maroon); }
+
+.cal-year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 22px 0;
+}
+.cal-month {
+  background: var(--dp-card);
+  border: 1px solid var(--dp-border);
+  border-top: 4px solid var(--accent, var(--dp-saffron));
+  border-radius: 10px;
+  padding: 12px 12px 14px;
+  box-shadow: 0 4px 12px rgba(94, 40, 10, .08);
+}
+.cal-month-name {
+  text-align: center;
+  font: 700 17px "Cinzel", Georgia, serif;
+  color: var(--dp-maroon);
+  margin-bottom: 8px;
+}
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+.cal-dow {
+  text-align: center;
+  font: 700 10px "Cinzel", Georgia, serif;
+  color: var(--dp-saffron);
+  padding-bottom: 3px;
+}
+.cal-day {
+  min-height: 26px;
+  text-align: center;
+  border-radius: 3px;
+  font: 13px "Crimson Text", Georgia, serif;
+  color: var(--dp-ink);
+  overflow: hidden;
+}
+.cal-day.is-empty { background: #faf3e6; opacity: .5; }
+.cal-num { display: block; line-height: 1.4; }
+.cal-day.has-festival { background: #fdf0dc; border: 1px solid #f0d3a6; }
+.cal-day.has-festival .cal-num { font-weight: 700; color: var(--dp-maroon); }
+.cal-fest {
+  display: block;
+  font: 600 9.5px/1.15 "Crimson Text", Georgia, serif;
+  color: var(--dp-maroon);
+  text-decoration: none;
+  padding: 1px 2px 3px;
+  overflow-wrap: anywhere;
+}
+.cal-fest:hover { color: var(--dp-saffron); text-decoration: underline; }
+
+@media (max-width: 1100px) { .cal-year-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) {
+  .cal-year-grid { grid-template-columns: 1fr; gap: 12px; }
+  .cal-fest { font-size: 10px; }
+}
+
+/* Download page */
+.download-theme-card { max-width: 850px; margin: 0 auto; }
+.download-action { margin: 22px 0; }
+.checksum { overflow-wrap: anywhere; font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.install-steps { padding-left: 24px; font: 18px/1.7 "Crimson Text", Georgia, serif; color: var(--dp-ink); }
+.install-steps code, .download-theme-card code { background: #f8ecd4; padding: 2px 5px; border-radius: 3px; color: var(--dp-maroon); }
+
+/* Share buttons (Theme Options > Share Buttons) */
+.ifs-share { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 16px 0; }
+.ifs-share--centre { justify-content: center; }
+.ifs-share--inverted { justify-content: flex-end; }
+.ifs-share-title { font: 700 13px "Cinzel", Georgia, serif; color: var(--dp-ink-soft); margin-right: 4px; }
+.ifs-share-btn {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--dp-border);
+  color: var(--dp-maroon);
+  font: 700 12px "Cinzel", Georgia, serif;
+  text-decoration: none;
+}
+.ifs-share-btn:hover, .ifs-share-btn:focus-visible { border-color: var(--dp-saffron); }
+
+/* Archive card extras (Theme Options > Archives) */
+.archive-readmore { display: block; margin-top: 6px; font: 700 12px "Cinzel", Georgia, serif; color: var(--dp-saffron); }
+.archive-views { display: block; margin-top: 6px; font: 13px "Crimson Text", Georgia, serif; color: var(--dp-ink-soft); }
